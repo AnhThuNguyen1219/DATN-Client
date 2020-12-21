@@ -244,9 +244,16 @@ const UserListBlog = (props) => {
         {/* News */}
         <div className="news-grid">
           {/* Post */}
-          {props.review.review.map((rev) => (
+          {(props.review.review!=null)? (
+            <>
+            {props.review.review.map((rev) => (
             <ThumnailBlog review={rev} />
           ))}
+            </>
+          ):(
+            <div>Chưa có bình luận nào, hãy đánh giá ngay.</div>
+          )}
+          
         </div>
       </div>
     </>
@@ -477,7 +484,9 @@ const UserDetail = (props) => {
                     <div className="container">
                       <div className="row">
                         {/* <div className="gutter-sizer" /> */}
-                        {bookInfor.books.map((data) => (
+                        {(bookInfor.books!=null) ? (
+                            <>
+                            {bookInfor.books.map((data) => (
                           <>
                             <CardBook
                               Id={data.id}
@@ -486,6 +495,13 @@ const UserDetail = (props) => {
                             ></CardBook>
                           </>
                         ))}
+                            </>
+                        ):(
+                          <>
+                          <div>Chưa có cuốn sách nào trong danh sách yêu thích. Hãy tìm cuốn sách yêu thích nào.</div>
+                          </>
+                        )}
+                        
                       </div>
                     </div>
                     {/* List favourite End */}

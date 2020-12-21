@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { selectUser } from "../../action/UserAction";
 import { useSelector, useDispatch } from "react-redux";
-import login from "../../service/LoginService.jsx";
+import {login, signup} from "../../service/LoginService.jsx";
 import { useHistory, Link, Redirect } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
@@ -210,7 +210,7 @@ const SideLogin = () => {
         localStorage.setItem("user-ava", data.avatar_url);
         localStorage.setItem("user-dob", data.dob);
         localStorage.setItem("user-role", data.role);
-        if (data.role == "") {
+        if (data.role == 0) {
           setWaitingLogin(false);
           setUserInfo(data);
           dispatchUserInfo(selectUser(userInfor));
@@ -218,9 +218,42 @@ const SideLogin = () => {
         } else if (data.role == 1) {
           setWaitingLogin(false);
           history.push("/admin");
+          window.location.reload(false);
         }
       } else alert(status);
     });
+
+  }
+  const [usernameSU, setUsernameSU] = useState();
+  const [passwordSU, setPasswordSU] = useState();
+  const [rePasswordSU, setRePasswordSU] = useState();
+  function handleSignUp(event){
+    event.preventDefault();
+    setWaitingLogin(true);
+    if(passwordSU==rePasswordSU){
+      signup(usernameSU, passwordSU ).then(([status, data]) => {
+        if (status == 200) {
+          localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("user-id", data.id);
+          localStorage.setItem("user-name", data.username);
+          localStorage.setItem("user-ava", data.avatar_url);
+          localStorage.setItem("user-dob", data.dob);
+          localStorage.setItem("user-role", data.role);
+          if (data.role == 0) {
+            setWaitingLogin(false);
+            setUserInfo(data);
+            dispatchUserInfo(selectUser(userInfor));
+            window.location.reload(false);
+          } else if (data.role == 1) {
+            setWaitingLogin(false);
+            history.push("/admin");
+            window.location.reload(false);
+          }
+        } else alert("Tên đăng nhập đã tồn tại!");
+      });
+    }
+    else alert("Bạn đã nhập sai mật khẩu!")
+    
   }
 
   return (
@@ -284,19 +317,6 @@ const SideLogin = () => {
                         }}
                       />
                     </div>
-                    {/* <div className="form-group form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="exampleCheck1"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="exampleCheck1"
-                      >
-                        Remember me
-                      </label>
-                    </div> */}
                     <button type="submit" className="btn btn-outline-dark">
                       {waitingLogin && (
                         <div
@@ -341,7 +361,7 @@ const SideLogin = () => {
                 data-parent="#accordionExample"
               >
                 <div className="card-body">
-                  <form>
+                  <form onSubmit={handleSignUp}>
                     <div className="form-group">
                       <label htmlFor="exampleInputEmail1">Tên người dùng</label>
                       <input
@@ -349,6 +369,7 @@ const SideLogin = () => {
                         className="form-control"
                         id="exampleInputEmail1"
                         aria-describedby="emailHelp"
+                        onChange={event =>{setUsernameSU(event.target.value)}}
                       />
                     </div>
                     <div className="form-group">
@@ -359,6 +380,7 @@ const SideLogin = () => {
                         type="password"
                         className="form-control"
                         id="exampleInputPassword1"
+                        onChange={event =>{setPasswordSU(event.target.value)}}
                       />
                     </div>
                     <div className="form-group">
@@ -369,6 +391,7 @@ const SideLogin = () => {
                         type="password"
                         className="form-control"
                         id="retypeInputPassword1"
+                        onChange={event =>{setRePasswordSU(event.target.value)}}
                       />
                     </div>
                     <button type="submit" className="btn btn-outline-dark">
