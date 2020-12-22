@@ -1756,6 +1756,15 @@ color: deeppink;
  .media-body p i:hover{
     color: #ff413a;
 }
+.media-body a:hover{
+    color: #f7941d;
+}
+.media-body #delete:hover{
+    color: #ff413a;
+}
+.fa-trash-alt:hover{
+    color: #ff413a;
+}
  .subtotal {
     padding: 15px 20px;
     overflow: hidden;

@@ -323,7 +323,11 @@ END scroll-top-arrow
     position: relative;
     background-image: url(../img/banner1.2.jpg);
 }
-
+.slider-sec2 {
+    min-height:450px;
+    position: relative;
+    background-image: url("https://res.cloudinary.com/anhthu1219/image/upload/v1608637745/book_cover/apps.9072.14000697169355955.46e3090f-b2a3-4afa-ad0d-d63853efdc69_gpv7kc.jpg");
+}
 /*parallax disable*/
 .parallax-disable{
     background-repeat: no-repeat !important;

@@ -36,7 +36,7 @@ const SideCategory = (props) => {
             </ul>
           </div>
           <button className="btn yellow-color-green-gradient-btn mt-1">
-            Filter
+            Lọc
           </button>
         </div>
       </div>

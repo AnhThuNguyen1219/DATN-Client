@@ -80,7 +80,7 @@ const Admin = () => {
                   </div>
                 </div>
               </div>
-              <div className="row">
+              {/* <div className="row">
                 
                 <div className="col">
                   <div className="row">
@@ -162,9 +162,9 @@ const Admin = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   {/* end row */}
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-md-4">
                       <div className="card mini-stats-wid">
                         <div className="card-body">
@@ -224,7 +224,7 @@ const Admin = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* end row */} 
             </div>
             {/* container-fluid */}

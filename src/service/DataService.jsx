@@ -58,7 +58,78 @@ const addReviewBook = async (userID, bookID, rating, title, rate_review) => {
       return status;
     });
 };
+const updateReviewBook = async (rate_id, rating, title, rate_review) => {
+  var token = localStorage.getItem("accessToken");
 
+  return await axios({
+    method: "put",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+
+      Authorization: `Bearer ${token}`,
+    },
+    url: "http://localhost:9000/api/review/"+rate_id,
+    data: {
+      rating: "" + rating,
+      rate_title: title,
+      rate_review: rate_review,
+    },
+  })
+    .then(function (response) {
+      return response.status;
+    })
+    .catch(function (error) {
+      let status = error.response.status;
+      return status;
+    });
+};
+
+const delReviewBook =async(review_id) => {
+  var token = localStorage.getItem("accessToken");
+
+  return await axios({
+    method: "delete",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+
+      Authorization: `Bearer ${token}`,
+    },
+    url: "http://localhost:9000/api/review/"+review_id,
+  })
+    .then(function (response) {
+      return response.status;
+    })
+    .catch(function (error) {
+      let status = error.response.status;
+      return status;
+    });
+};
+const delABook =async(book_id) => {
+  var token = localStorage.getItem("accessToken");
+
+  return await axios({
+    method: "delete",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+
+      Authorization: `Bearer ${token}`,
+    },
+    url: "http://localhost:9000/api/book/"+book_id,
+  })
+    .then(function (response) {
+      return response.status;
+    })
+    .catch(function (error) {
+      let status = error.response.status;
+      return status;
+    });
+};
 const getCoverURL =(cover) => {
   const CLOUDINARY_URL =
     "https://api.cloudinary.com/v1_1/anhthu1219/image/upload";
@@ -126,4 +197,4 @@ const addNewBook = async (
       return status;
     });
 };
-export { addFavourBook, addReviewBook, addNewBook };
+export { addFavourBook, addReviewBook,updateReviewBook, delReviewBook, addNewBook, delABook };

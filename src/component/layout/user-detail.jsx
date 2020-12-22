@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CardBook } from "./list_book";
+import { delReviewBook } from "../../service/DataService";
 
 const UserInfor = (props) => {
   return (
@@ -244,16 +245,15 @@ const UserListBlog = (props) => {
         {/* News */}
         <div className="news-grid">
           {/* Post */}
-          {(props.review.review!=null)? (
+          {props.review.review != null ? (
             <>
-            {props.review.review.map((rev) => (
-            <ThumnailBlog review={rev} />
-          ))}
+              {props.review.review.map((rev) => (
+                <ThumnailBlog review={rev} />
+              ))}
             </>
-          ):(
+          ) : (
             <div>Chưa có bình luận nào, hãy đánh giá ngay.</div>
           )}
-          
         </div>
       </div>
     </>
@@ -261,13 +261,66 @@ const UserListBlog = (props) => {
 };
 
 const ThumnailBlog = (props) => {
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var d= new Date(props.review.created_at).toLocaleDateString([],options);
-  console.log(d)
+  var options = { year: "numeric", month: "long", day: "numeric" };
+  var d = new Date(props.review.created_at).toLocaleDateString([], options);
+  const handleDelReview = () => {
+    delReviewBook(props.review.id).then(
+      (status) => {
+        if (status == 200) {
+          window.location.reload();
+        } else if (status == 500) {
+          alert("Không thể xoá đánh giá cuốn sách ngay lúc này!");
+          window.location.reload();
+        } else {
+          alert(status);
+          console.log(status);
+        }
+      }
+    );
+  };
   return (
     <>
-    <div>{d}</div>
-      <a className="media blog" href="" style = {{textDecoration:"none"}} >
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Xoá
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body">Bạn chắc chắn muốn xoá đánh giá này?</div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Đóng
+              </button>
+              <button type="button" className="btn btn-primary" onClick={handleDelReview}>
+                Xoá
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>{d}</div>
+      <a className="media blog" href="" style={{ textDecoration: "none" }}>
         <img
           src={props.review.book_cover}
           className="align-self-center mr-3"
@@ -275,18 +328,37 @@ const ThumnailBlog = (props) => {
         />
         <div className="media-body">
           <div className=" row">
-            <h5 className="mt-0 col-7">{props.review.title}</h5>
-            <p className="mt-0 col-5">
+            <h5 className="mt-0 col-6" style={{overflow:"hidden"}}>{props.review.title}</h5>
+            <p className="mt-0 col-4">
               Đánh giá: {props.review.rating}
               <i className="lni lni-heart-filled"></i>
             </p>
+            <a
+              href={`/review/${props.review.id}`}
+              className="col-1"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Chỉnh sửa"
+            >
+              <i className="far fa-edit"></i>
+            </a>
+            <a
+              id="delete"
+              className="col-1"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Xoá"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
+              <i className="far fa-trash-alt"></i>
+            </a>
           </div>
-          <hr style={{margin:"0px"}}/>
+          <hr style={{ margin: "0px" }} />
           <div
-                            className="content"
-                            dangerouslySetInnerHTML={{ __html: props.review.review }}
-                          ></div>
-          
+            className="content"
+            dangerouslySetInnerHTML={{ __html: props.review.review }}
+          ></div>
         </div>
       </a>
     </>
@@ -484,24 +556,26 @@ const UserDetail = (props) => {
                     <div className="container">
                       <div className="row">
                         {/* <div className="gutter-sizer" /> */}
-                        {(bookInfor.books!=null) ? (
-                            <>
+                        {bookInfor.books != null ? (
+                          <>
                             {bookInfor.books.map((data) => (
-                          <>
-                            <CardBook
-                              Id={data.id}
-                              Cover={data.cover}
-                              Title={data.title}
-                            ></CardBook>
+                              <>
+                                <CardBook
+                                  Id={data.id}
+                                  Cover={data.cover}
+                                  Title={data.title}
+                                ></CardBook>
+                              </>
+                            ))}
                           </>
-                        ))}
-                            </>
-                        ):(
+                        ) : (
                           <>
-                          <div>Chưa có cuốn sách nào trong danh sách yêu thích. Hãy tìm cuốn sách yêu thích nào.</div>
+                            <div>
+                              Chưa có cuốn sách nào trong danh sách yêu thích.
+                              Hãy tìm cuốn sách yêu thích nào.
+                            </div>
                           </>
                         )}
-                        
                       </div>
                     </div>
                     {/* List favourite End */}

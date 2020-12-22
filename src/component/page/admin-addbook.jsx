@@ -7,6 +7,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { addNewBook, getCoverURL } from "../../service/DataService";
+import { useHistory } from "react-router-dom";
 /* Sidebar */
 
 const AdminAddBook = () => {
@@ -53,7 +54,7 @@ const AddForm = () => {
   const [category, setCategory] = useState({ categories: [] });
   const [publisher, setPublisher] = useState({ publisher: [] });
   const [author, setAuthor] = useState({ author: [] });
-
+  const history=useHistory()
   //select part
   const [booktitle, setbooktitle] = useState();
   const [bookcate, setbookcate] = useState();
@@ -88,6 +89,7 @@ const AddForm = () => {
   };
 
   const handleUploadBook = () => {
+    
     setWaiting(true)
     if (
       booktitle != null &&
@@ -243,7 +245,7 @@ const AddForm = () => {
                 Thêm mới
               </button>
 
-              <button type="button" className="btn btn-secondary waves-effect">
+              <button type="button" className="btn btn-secondary waves-effect"onClick={()=>{history.goBack()}}>
                 Huỷ bỏ
               </button>
             </form>

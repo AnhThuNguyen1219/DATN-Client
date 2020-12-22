@@ -22,6 +22,7 @@ import AdminAddBook from "./component/page/admin-addbook";
 import AdminBook from "./component/page/admin-book";
 import SearchBook from "./component/page/searchbook";
 import AdminSearch from "./component/page/admin-search";
+import AdminCategoryBook from "./component/page/admin-categorybook";
 
 function App() {
   // let { bookId } = useParams()
@@ -45,7 +46,8 @@ function App() {
         <Switch>
           <Route exact path="/admin" render={() => <Admin />} />
           <Route exact path="/search?key=" render={() => <AdminSearch />} />
-          <Route exact path="/admin/book/category/:categoryId" render={() => <AdminBook />} />
+          <Route exact path="/admin/book" render={() => <AdminBook />} />
+          <Route exact path="/admin/book/category/:categoryId" render={() => <AdminCategoryBook />} />
           <Route path="/admin/book/add" render={() => <AdminAddBook />} />
           <Redirect to="/admin"/>
         </Switch>

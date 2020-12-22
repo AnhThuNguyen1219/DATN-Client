@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
+import { useParams, Link, useHistory } from "react-router-dom";
 import AdminHeader from "../layout/adminheader";
 import AdminSideMenu from "../layout/adminsidemenu";
-import { CardBook } from "../layout/list_book";
 import axios from "axios";
 import { useState } from "react";
 import { Card, CardBody, Collapse } from "reactstrap";
+import { delABook } from "../../service/DataService";
+
 
 const AdminSideFilter = () => {
   const [category, setCategory] = useState({ categories: [] });
@@ -80,21 +82,13 @@ const AdminBookResult = (props) => {
   return (
     <>
       <div class="col-lg-9">
-        {/* {props.books.map((book) => (
-          <>
-            <CardBook
-              Id={book.id}
-              Cover={book.cover}
-              Title={book.title}
-            ></CardBook>
-          </>
-        ))} */}
+        <BookCategory/>
       </div>
     </>
   );
 };
 
-const AdminBook = () => {
+const AdminCategoryBook = () => {
   return (
     <>
       {/* Begin page */}
@@ -140,4 +134,109 @@ const AdminBook = () => {
   );
 };
 
-export default AdminBook;
+const BookCategory = (props) => {
+  let params = useParams();
+  let category_id = params.categoryId;
+  const [isLoading, setIsLoading] = useState(false);
+  const [categoryName, setCategoryName] = useState("");
+  const [categoryBook, setCategoryBook] = useState({ books: [] });
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      var url = "http://localhost:9000/api/category/" + category_id;
+      console.log(url);
+      const cate = await axios(url);
+      if (cate.status == 200) {
+        setCategoryName(cate.data.category_name);
+        setCategoryBook(cate.data);
+        setIsLoading(false);
+      } else {
+        setIsLoading(true);
+        console.log("Something wrong!");
+      }
+    };
+
+    fetchData();
+  }, []);
+  return (
+    <>
+      {/* START LISTING HEADING */}
+      <div className="col-12 product-listing-heading" style={{paddingTop: "0px"}}>
+        <h4 className="heading text-left"style={{marginBottom:"5px"}}>Danh mục: {categoryName}</h4>
+        {/* <p className="para_text text-left">
+                    {props.categoryDefine}
+                  </p> */}
+      </div>
+      {/* END LISTING HEADING */}
+      {/* START PRODUCT LISTING SECTION */}
+      <div className="col-12 product-listing-products row book">
+        {/* START DISPLAY PRODUCT */}
+
+        {categoryBook.books.map((book) => (
+          <>
+            <CardBook
+              Id={book.id}
+              Cover={book.cover}
+              Title={book.title}
+            ></CardBook>
+          </>
+        ))}
+        {/* END DISPLAY PRODUCT */}
+      </div>
+      {/* END PRODUCT LISTING SECTION */}
+    </>
+  );
+};
+const CardBook = (props) => {
+    const history=useHistory()
+    const handleDelBook = () =>{
+        delABook(props.Id).then(
+            (status) => {
+              if (status == 200) {
+                alert("Đã xoá");
+                window.location.reload();
+                history.goBack()
+              } else if (status == 500) {
+                alert("Không thể thay đổi đánh giá cuốn sách ngay lúc này!");
+                window.location.reload();
+              } else {
+                alert(status);
+                console.log(status);
+              }
+            }
+          );
+    }
+    return (
+      <>
+        <figure className="gallery-grid__item category-concept">
+        <div>
+          <div className="gallery-grid__image-wrap">
+          
+            <img
+              className="gallery-grid__image cover lazyload"
+              src={props.Cover}
+              data-zoom
+              alt
+            />
+            
+          </div>
+          </div>
+          <figcaption className="gallery-grid__caption">
+            <div className="row">
+            <div className="col-8">
+              <h4 className="title title--h6 gallery-grid__title ">
+                {props.Title}
+              </h4>
+              </div>
+  
+              <a className="title title--h6 gallery-grid__title col-4" onClick={handleDelBook}>
+              <i className="far fa-trash-alt"></i>
+              </a>
+            </div>
+          </figcaption>
+        </figure>
+        <div className="verticalLine"></div>
+      </>
+    );
+  };
+export default AdminCategoryBook;

@@ -131,9 +131,11 @@ const Avatar = () => {
   const name = localStorage.getItem("user-name");
   const ava = localStorage.getItem("user-ava");
   const dob = localStorage.getItem("user-dob");
+  const history=useHistory()
   function handleLogout(event) {
     event.preventDefault();
     localStorage.clear();
+    history.push("/")
     window.location.reload(false);
   }
   if (token == null)
@@ -171,9 +173,7 @@ const Avatar = () => {
               <a href={`/user/${id}`} className="dropdown-item" id={id}>
                 {name}
               </a>
-              <a className="dropdown-item" href="#">
-                Cài đặt
-              </a>
+              
               <div className="dropdown-divider"></div>
               <a className="dropdown-item" href="#" onClick={handleLogout}>
                 <i className="lni lni-exit"></i>

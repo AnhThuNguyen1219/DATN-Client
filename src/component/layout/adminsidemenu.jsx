@@ -26,7 +26,7 @@ const AdminSideMenu = () => {
               </a>
             </li>
             <li className="menu-title">Quản lý</li>
-            <li>
+            {/* <li>
               <a onClick={catetoggle}  className="has-arrow waves-effect">
                 <i className="bx bx-layout" />
                 <span>Quản lý danh mục</span>
@@ -44,7 +44,7 @@ const AdminSideMenu = () => {
                 </li>
               </ul>
               </Collapse>
-            </li>
+            </li> */}
             
             <li>
               <a href="/admin/book" className=" waves-effect">
@@ -52,7 +52,7 @@ const AdminSideMenu = () => {
                 <span>Quản lý sách</span>
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="javascript: void(0);" className="waves-effect">
                 <i className="fas fa-user-friends"></i>
                 <span>Quản lý người dùng</span>
@@ -63,7 +63,7 @@ const AdminSideMenu = () => {
               <i className="far fa-file-alt"></i>
                 <span>Quản lý đề xuất</span>
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
         {/* Sidebar */}
